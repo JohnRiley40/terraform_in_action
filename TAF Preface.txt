@@ -1,0 +1,164 @@
+A long time ago, in a datacenter far, far away, an ancient group of powerful beings known as “sysadmins” used to deploy infrastructure manually. Every server, every database, every load balancer, and every bit of network configuration was created and managed by hand. It was a dark and fearful age: fear of downtime, fear of accidental misconfiguration, fear of slow and fragile deployments, and fear of what would hap‐ pen if the sysadmins fell to the dark side (i.e., took a vacation). The good news is that thanks to the DevOps movement, there is now a better way to do things: Terraform.
+Terraform is an open source tool created by HashiCorp that allows you to define your infrastructure as code using a simple, declarative language and to deploy and manage that infrastructure across a variety of public cloud providers (e.g., Amazon Web Serv‐ ices, Microsoft Azure, Google Cloud Platform, DigitalOcean) and private cloud and virtualization platforms (e.g., OpenStack, VMWare) using a few commands. For example, instead of manually clicking around a web page or running dozens of com‐ mands, here is all the code it takes to configure a server on AWS:
+provider "aws" { region = "us-east-2"
+}
+resource "aws_instance" "example" {
+ami = "ami-0c55b159cbfafe1f0" instance_type = "t2.micro"
+}
+And to deploy it, you just run the following:
+    $ terraform init
+    $ terraform apply
+Thanks to its simplicity and power, Terraform has emerged as a key player in the DevOps world. It allows you to replace the tedious, fragile, and manual parts of infra‐ structure management with a solid, automated foundation upon which you can build
+Preface
+  ix
+all your other DevOps practices (e.g., automated testing, Continuous Integration, Continuous Delivery) and tooling (e.g., Docker, Chef, Puppet).
+This book is the fastest way to get up and running with Terraform.
+You’ll go from deploying the most basic “Hello, World” Terraform example (in fact, you just saw it!) all the way up to running a full tech stack (server cluster, load bal‐ ancer, database) capable of supporting a large amount of traffic and a large team of developers—all in the span of just a few chapters. This is a hands-on tutorial that not only teaches you DevOps and infrastructure as code (IaC) principles, but also walks you through dozens of code examples that you can try at home, so make sure you have your computer handy.
+By the time you’re done, you’ll be ready to use Terraform in the real world.
+Who Should Read This Book
+This book is for anyone responsible for the code after it has been written. That includes sysadmins, operations engineers, release engineers, site reliability engineers, DevOps engineers, infrastructure developers, full-stack developers, engineering man‐ agers, and CTOs. No matter what your title is, if you’re the one managing infrastruc‐ ture, deploying code, configuring servers, scaling clusters, backing up data, monitoring apps, and responding to alerts at 3 a.m., this book is for you.
+Collectively, all of these tasks are usually referred to as “operations.” In the past, it was common to find developers who knew how to write code, but did not understand operations; likewise, it was common to find sysadmins who understood operations, but did not know how to write code. You could get away with that divide in the past, but in the modern world, as cloud computing and the DevOps movement become ubiquitous, just about every developer will need to learn operational skills and every sysadmin will need to learn coding skills.
+This book does not assume that you’re already an expert coder or expert sysadmin—a basic familiarity with programming, the command line, and server-based software (e.g., websites) should suffice. Everything else you need you’ll be able to pick up as you go, so that by the end of the book, you will have a solid grasp of one of the most critical aspects of modern development and operations: managing infrastructure as code.
+In fact, you’ll learn not only how to manage infrastructure as code using Terraform, but also how this fits into the overall DevOps world. Here are some of the questions you’ll be able to answer by the end of the book:
+ x | Preface
+
+• Why use IaC at all?
+• What are the differences between configuration management, orchestration, pro‐ visioning, and server templating?
+• When should you use Terraform, Chef, Ansible, Puppet, Salt, CloudFormation, Docker, Packer, or Kubernetes?
+• How does Terraform work and how do you use it to manage your infrastructure?
+• How do you create reusable Terraform modules?
+• How do you write Terraform code that’s reliable enough for production usage?
+• How do you test your Terraform code?
+• How do you make Terraform a part of your automated deployment process?
+• What are the best practices for using Terraform as a team?
+The only tools you need are a computer (Terraform runs on most operating systems), an internet connection, and the desire to learn.
+Why I Wrote This Book
+Terraform is a powerful tool. It works with all popular cloud providers. It uses a clean, simple language and has strong support for reuse, testing, and versioning. It’s open source and has a friendly, active community. But there is one area where it’s lacking: maturity.
+Terraform is a relatively new technology. As of May 2019, it has not yet hit a 1.0.0 release yet, and despite Terraform’s growing popularity, it’s still difficult to find books, blog posts, or experts to help you master the tool. The official Terraform documenta‐ tion does a good job of introducing the basic syntax and features, but it includes little information on idiomatic patterns, best practices, testing, reusability, or team work‐ flows. It’s like trying to become fluent in French by studying only the vocabulary but not any of the grammar or idioms.
+The reason I wrote this book is to help developers become fluent in Terraform. I’ve been using Terraform for four out of the five years it has existed, mostly at my com‐ pany, Gruntwork, where Terraform is one of the core tools we’ve used to create a library of more than 300,000 lines of reusable, battle-tested infrastructure code that’s used in production by hundreds of companies. Writing and maintaining this much infrastructure code, over this many years, and using it with so many different compa‐ nies and use cases has taught us a lot of hard lessons. My goal is to share these lessons with you so that you can cut this lengthy process down and become fluent in a matter of days.
+ Preface | xi
+
+Of course, you can’t become fluent just by reading. To become fluent in French, you need to spend time conversing with native French speakers, watching French TV shows, and listening to French music. To become fluent in Terraform, you need to write real Terraform code, use it to manage real software, and deploy that software on real servers. Therefore, be ready to read, write, and execute a lot of code.
+What You Will Find in This Book
+Here’s an outline of what the book covers:
+Chapter 1, Why Terraform
+How DevOps is transforming the way we run software; an overview of infra‐ structure as code tools, including configuration management, server templating, orchestration, and provisioning tools; the benefits of infrastructure as code; a comparison of Terraform, Chef, Puppet, Ansible, SaltStack, OpenStack Heat, and CloudFormation; how to combine tools such as Terraform, Packer, Docker, Ansi‐ ble, and Kubernetes.
+Chapter 2, Getting Started with Terraform
+Installing Terraform; an overview of Terraform syntax; an overview of the Terra‐ form CLI tool; how to deploy a single server; how to deploy a web server; how to deploy a cluster of web servers; how to deploy a load balancer; how to clean up resources you’ve created.
+Chapter 3, How to Manage Terraform State
+What Terraform state is; how to store state so that multiple team members can access it; how to lock state files to prevent race conditions; how to manage secrets with Terraform; how to isolate state files to limit the damage from errors; how to use Terraform workspaces; a best-practices file and folder layout for Terraform projects; how to use read-only state.
+Chapter 4, How to Create Reusable Infrastructure with Terraform Modules
+What modules are; how to create a basic module; how to make a module config‐ urable with inputs and outputs; local values; versioned modules; module gotchas; using modules to define reusable, configurable pieces of infrastructure.
+Chapter 5, Terraform Tips and Tricks: Loops, If-Statements, Deployment, and Gotchas
+Loops with the count parameter, for_each and for expressions, and the for string directive; conditionals with the count parameter, for_each and for expressions, and the if string directive; built-in functions; zero-downtime deployment; common Terraform gotchas and pitfalls, including count and for_each limitations, zero-downtime deployment gotchas, how valid plans can fail, refactoring problems, and eventual consistency.
+ xii | Preface
+
+Chapter 6, Production-Grade Terraform Code
+Why DevOps projects always take longer than you expect; the production-grade infrastructure checklist; how to build Terraform modules for production; small modules; composable modules; testable modules; releasable modules; Terraform Registry; Terraform escape hatches.
+Chapter 7, How to Test Terraform Code
+Manual tests for Terraform code; sandbox environments and cleanup; automated tests for Terraform code; Terratest; unit tests; integration tests; end-to-end tests; dependency injection; running tests in parallel; test stages; retries; the test pyra‐ mid; static analysis; property checking.
+Chapter 8, How to Use Terraform as a Team
+How to adopt Terraform as a team; how to convince your boss; a workflow for deploying application code; a workflow for deploying infrastructure code; ver‐ sion control; the golden rule of Terraform; code reviews; coding guidelines; Ter‐ raform style; CI/CD for Terraform; the deployment process.
+Feel free to read the book from beginning to end or jump around to the chapters that interest you the most. Note that the examples in each chapter reference and build upon the examples from the previous chapters, so if you skip around, use the open source code examples (as described in “Open Source Code Examples” on page xvi) to get your bearings. At the end of the book, in Appendix A, you’ll find a list of recom‐ mended reading where you can learn more about Terraform, operations, IaC, and DevOps.
+What’s New in the Second Edition
+The first edition of this book came out in 2017; I’m now writing the second edition in May 2019, and it’s remarkable how much has changed in just a couple years! The sec‐ ond edition is almost double the length of the first edition (roughly 160 more pages), including two completely new chapters, and major updates to all the original chapters and code examples.
+If you read the first edition of the book and want to know what’s new, or if you’re just curious to see how Terraform has evolved, here are some of the highlights:
+Four major Terraform releases
+Terraform was at version 0.8 when this book first came out; between then and the time of this second edition, Terraform has had four major releases, and is now at version 0.12. These releases introduced some amazing new functionality, as described next, as well as a fair amount of upgrade work for users!1
+1 Check out the Terraform upgrade guides for details.
+  Preface | xiii
+
+Automated testing improvements
+The tooling and practices for writing automated tests for Terraform code have evolved considerably. Chapter 7 is a completely new chapter dedicated to testing, covering topics such as unit tests, integration tests, end-to-end tests, dependency injection, test parallelism, static analysis, and more.
+Module improvements
+The tooling and practices for creating Terraform modules have also evolved con‐ siderably. In the brand new Chapter 6, you’ll find a guide to building reusable, battle-tested, production-grade Terraform modules—the kind of modules you’d bet your company on.
+Workflow improvements
+Chapter 8 has been completely rewritten to reflect the changes in how teams inte‐ grate Terraform into their workflow, including a detailed guide on how to take application code and infrastructure code from development through testing and all the way to production.
+HCL2
+Terraform 0.12 overhauled the underlying language from HCL to HCL2. This included support for first-class expressions (so that you don’t need to wrap every‐ thing with ${...}!), rich type constraints, lazily evaluated conditional expressions, support for null, for_each and for expressions, dynamic inline blocks, and more. All the code examples in this book have been updated to use HCL2, and the new language features are covered extensively in Chapters 5 and 6.
+Terraform state revamp
+Terraform 0.9 introduced backends as a first-class way to store and share Terra‐ form state, including built-in support for locking. Terraform 0.9 also introduced state environments as a way to manage deployments across multiple environ‐ ments. In Terraform 0.10, state environments were replaced with Terraform workspaces. I cover all of these topics in Chapter 3.
+Terraform providers split
+In Terraform 0.10, the core Terraform code was split up from the code for all the providers (i.e., the code for AWS, GCP, Azure, etc.). This allowed providers to be developed in their own repositories, at their own cadence, with their own ver‐ sioning. However, you now must run terraform init to download the provider code every time you start working with a new module, as discussed in Chapters 2 and 7.
+Massive provider growth
+Since 2016, Terraform has grown from a handful of major cloud providers (the usual suspects, such as AWS, GCP, and Azure) to more than 100 official provid‐
+ xiv | Preface
+
+ers and many more community providers.2 This means that you can now use Terraform to not only manage many other types of clouds (e.g., there are now providers for Alicloud, Oracle Cloud Infrastructure, VMware vSphere, and oth‐ ers), but also to manage many other aspects of your world as code, including ver‐ sion control systems, such as the GitHub, GitLab, or BitBucket providers; data stores like MySQL, PostreSQL, or InfluxDB providers; monitoring and alerting systems, including DataDog, New Relic, or Grafana providers; platform tools such as Kubernetes, Helm, Heroku, Rundeck, or Rightscale providers; and much more. Moreover, each provider has much better coverage these days: AWS now covers the majority of important AWS services and often adds support for new services even before CloudFormation!
+Terraform Registry
+HashiCorp launched the Terraform Registry in 2017, a UI that made it easy to browse and consume open source, reusable Terraform modules contributed by the community. In 2018, HashiCorp added the ability to run a Private Terraform Registry within your own organization. Terraform 0.11 added first-class syntax support for consuming modules from a Terraform Registry. We look at the Regis‐ try in “Releasable modules” on page 208.
+Better error handling
+Terraform 0.9 updated state error handling: if there was an error writing state to a remote backend, the state would be saved locally in an errored.tfstate file. Terra‐ form 0.12 completely overhauled error handling, by catching errors earlier, show‐ ing clearer error messages, and including the file path, line number, and a code snippet in the error message.
+Many other small changes
+There were many other smaller changes along the way, including the introduc‐ tion of local values (“Module Locals” on page 118), new “escape hatches” for hav‐ ing Terraform interact with the outside world via scripts (e.g., “Beyond Terraform Modules” on page 213), running plan as part of the apply command (“Deploy a Single Server” on page 40), fixes for the create_before_destroy cycle issues, major improvements to the count parameter so that it can now include references to data sources and resources (“Loops” on page 134), dozens of new built-in functions, an overhaul in provider inheritance, and much more.
+2 You can find the list of Terraform providers at https://www.terraform.io/docs/providers/.
+  Preface | xv
+
+What You Won’t Find in This Book
+This book is not meant to be an exhaustive reference manual for Terraform. I do not cover all of the cloud providers, or all of the resources supported by each cloud pro‐ vider, or every available Terraform command. For these nitty-gritty details, I refer you instead to the Terraform documentation.
+The documentation contains many useful answers, but if you’re new to Terraform, infrastructure as code, or operations, you won’t even know what questions to ask. Therefore, this book is focused on what the documentation does not cover: namely, how to go beyond introductory examples and use Terraform in a real-world setting. My goal is to get you up and running quickly by discussing why you might want to use Terraform in the first place, how to fit it into your workflow, and what practices and patterns tend to work best.
+To demonstrate these patterns, I’ve included a number of code examples. I’ve tried to make it as easy as possible for you to try these examples at home by minimizing dependencies on any third parties. This is why almost all the examples use just a sin‐ gle cloud provider, AWS, so that you need to sign up only for a single third-party ser‐ vice (also, AWS offers a generous free tier, so running the example code shouldn’t cost you anything). This is why the book and the example code do not cover or require HashiCorp’s paid services: Terraform Pro and Terraform Enterprise. And this is why I’ve released all of the code examples as open source.
+Open Source Code Examples
+You can find all of the code samples in the book at the following URL:
+https://github.com/brikis98/terraform-up-and-running-code
+You might want to check out this repo before you begin reading so you can follow along with all the examples on your own computer:
+    git clone https://github.com/brikis98/terraform-up-and-running-code.git
+The code examples in that repo are broken down chapter by chapter. It’s worth noting that most of the examples show you what the code looks like at the end of a chapter. If you want to maximize your learning, you’re better off writing the code yourself, from scratch.
+You begin coding in Chapter 2, where you’ll learn how to use Terraform to deploy a basic cluster of web servers from scratch. After that, follow the instructions in each subsequent chapter on how to develop and improve this web server cluster example. Make the changes as instructed, try to write all of the code yourself, and use the sam‐ ple code in the GitHub repo only as a way to check your work or get yourself unstuck.
+ xvi | Preface
+
+A Note About Versions
+All of the examples in this book were tested against Terraform 0.12.x, which was the most recent major release as of this writing. Because Terraform is a relatively new tool and has not hit version 1.0.0 yet, it is likely that future releases will contain backward incompatible changes and that some of the best practices will change and evolve over time.
+I’ll try to release updates as often as I can, but the Terraform project moves fast, so you’ll need to do some work to keep up with it on your own. For the latest news, blog posts, and talks on Terra‐ form and DevOps, be sure to check out this book’s website and subscribe to the newsletter!
+Using the Code Examples
+This book is here to help you get your job done, and you are welcome to use the sam‐ ple code in your programs and documentation. You do not need to contact O’Reilly for permission unless you’re reproducing a significant portion of the code. For exam‐ ple, writing a program that uses several chunks of code from this book does not require permission. Selling or distributing a CD-ROM of examples from O’Reilly books does require permission. Answering a question by citing this book and quoting example code does not require permission. Incorporating a significant amount of example code from this book into your product’s documentation does require per‐ mission.
+Attribution is appreciated, but not required. An attribution usually includes the title, author, publisher, and ISBN. For example: “Terraform: Up and Running, Second Edi‐ tion by Yevgeniy Brikman (O’Reilly). Copyright 2019 Yevgeniy Brikman, 978-1-492-04690-5.”
+If you feel your use of code examples falls outside fair use or the permission given above, feel free to contact O’Reilly Media at permissions@oreilly.com.
+Conventions Used in This Book
+The following typographical conventions are used in this book:
+Italic
+Indicates new terms, URLs, email addresses, filenames, and file extensions.
+  Using the Code Examples
+| 17
+
+Constant width
+Used for program listings, as well as within paragraphs to refer to program ele‐ ments such as variable or function names, databases, data types, environment variables, statements, and keywords.
+Constant width bold
+Shows commands or other text that should be typed literally by the user. This element signifies a general note.
+This element indicates a warning or caution.
+O’Reilly Online Learning
+For almost 40 years, O’Reilly Media has provided technology and business training, knowledge, and insight to help compa‐ nies succeed.
+Our unique network of experts and innovators share their knowledge and expertise through books, articles, and our online learning platform. O’Reilly’s online learning platform gives you on-demand access to live training courses, in-depth learning paths, interactive coding environments, and a vast collection of text and video from O’Reilly and 200+ other publishers. For more information, please visit http:// oreilly.com.
+    xviii | Preface
+
+How to Contact O’Reilly Media
+Please address comments and questions concerning this book to the publisher:
+O’Reilly Media, Inc.
+1005 Gravenstein Highway North
+Sebastopol, CA 95472
+800-998-9938 (in the United States or Canada) 707-829-0515 (international or local) 707-829-0104 (fax)
+We have a web page for this book, where we list errata, examples, and any additional information. You can access this page at http://bit.ly/terraform-up-and-running-2e.
+To comment or ask technical questions about this book, send email to bookques‐ tions@oreilly.com.
+For news and more information about our books and courses, see our website at http://www.oreilly.com.
+Find us on Facebook: http://facebook.com/oreilly
+Follow us on Twitter: http://twitter.com/oreillymedia
+Watch us on YouTube: http://www.youtube.com/oreillymedia
+Acknowledgments
+Josh Padnick
+This book would not have been possible without you. You were the one who introduced me to Terraform in the first place, taught me all the basics, and helped me figure out all the advanced parts. Thank you for supporting me while I took our collective learnings and turned them into a book. Thank you for being an awesome cofounder and making it possible to run a startup while still living a fun life. And thank you most of all for being a good friend and a good person.
+O’Reilly Media
+Thank you for publishing another one of my books. Reading and writing have profoundly transformed my life and I’m proud to have your help in sharing some of my writing with others. A special thanks to Brian Anderson for helping me get the first edition of this book out in record time, and to Virginia Wilson for some‐ how breaking that record for the second edition.
+ Preface | xix
+
+Gruntwork employees
+I can’t thank you all enough for (a) joining our tiny startup, (b) building amazing software, (c) holding down the fort while I worked on the second edition of this book, and (d) being amazing colleagues and friends.
+Gruntwork customers
+Thank you for taking a chance on a small, unknown company and volunteering to be guinea pigs for our Terraform experiments. Gruntwork’s mission is to make it 10 times easier to understand, develop, and deploy software. We haven’t always succeeded at that mission (I’ve captured many of our mistakes in this book!), so I’m grateful for your patience and willingness to be part of our audacious attempt to improve the world of software.
+HashiCorp
+Thank you for building an amazing collection of DevOps tools, including Terra‐ form, Packer, Consul, and Vault. You’ve improved the world of DevOps and, with it, the lives of millions of software developers.
+Kief Morris, Seth Vargo, Mattias Gees, Ricardo Ferreira, Akash Mahajan, Moritz Heiber
+Thank you for reading early versions of this book and providing lots of detailed, constructive feedback. Your suggestions have made this book significantly better.
+Readers of the First edition
+Those of you who bought the first edition of this book made the second edition possible. Thank you. Your feedback, questions, pull requests, and constant prod‐ ding for updates motivated nearly 160 additional pages of new content. I hope you find the new content useful and I’m looking forward to the continued prod‐ ding.
+Mom, Dad, Larisa, Molly
+I accidentally wrote another book. That probably means I didn’t spend as much time with you as I wanted. Thank you for putting up with me anyway. I love you.
